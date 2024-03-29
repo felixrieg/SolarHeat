@@ -42,9 +42,14 @@ async fn change_modus(
 }
 
 async fn get_state(State(mc): State<ModelController>) -> Result<Json<ControlData>> {
-    info!("{:<12} - {:?}\n", "get_state", "HANDLER");
+    // info!("{:<12} - {:?}\n", "get_state", "HANDLER");
 
     let control_data = mc.get_data().await?;
+
+    info!(
+        "{:<12} - {:?} : {:?}\n",
+        "get_state", "HANDLER", control_data
+    );
 
     Ok(Json(control_data))
 }
