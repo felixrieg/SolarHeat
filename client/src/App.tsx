@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App-header">
       <FormControl>
-        <InputLabel id="modus-select">Age</InputLabel>
+        <InputLabel id="modus-select">Mode</InputLabel>
 
         <Select
           labelId="modus-select"
