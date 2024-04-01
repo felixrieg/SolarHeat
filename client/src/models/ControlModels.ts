@@ -1,8 +1,6 @@
 export type Controls = {
   modus: Modus;
-  lat: number;
-  lon: number;
-  status: boolean;
+  weather: number;
 };
 
 export enum Modus {

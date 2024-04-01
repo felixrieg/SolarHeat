@@ -2,7 +2,6 @@ import "./App.css";
 import { Modus } from "./models/ControlModels";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useControlStore } from "./stores/ControlStore";
-import Status from "./components/Status";
 
 function App() {
   const controls = useControlStore((state) => state);
@@ -23,9 +22,7 @@ function App() {
           <MenuItem value={Modus.Continuous}>Continuous</MenuItem>
         </Select>
       </FormControl>
-      <div>lat: {controls.lat}</div>
-      <div>lon: {controls.lon}</div>
-      <Status />
+      <div>weather: {controls.weather}</div>
     </div>
   );
 }
