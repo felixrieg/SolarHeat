@@ -14,6 +14,7 @@ pub enum Modus {
     Off,
     Single,
     Continuous,
+    On,
 }
 
 #[derive(Debug, Clone, Serialize)]

@@ -20,6 +20,7 @@ function App() {
           <MenuItem value={Modus.Off}>Off</MenuItem>
           <MenuItem value={Modus.Single}>Single</MenuItem>
           <MenuItem value={Modus.Continuous}>Continuous</MenuItem>
+          <MenuItem value={Modus.On}>On</MenuItem>
         </Select>
       </FormControl>
       <div>weather: {controls.weather}</div>
