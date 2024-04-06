@@ -1,0 +1,21 @@
+@import "../../variables.scss";
+
+.Home {
+  width: 100%;
+  height: 100%;
+  .Content {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+    width: 100%;
+    max-width: $content-size;
+    min-width: $phone-size;
+    position: relative;
+  }
+
+  .settingsbutton {
+    position: absolute;
+    top: -5vh;
+    right: 10px;
+  }
+}

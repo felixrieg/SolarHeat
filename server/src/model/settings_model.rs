@@ -9,7 +9,7 @@ use log::info;
 use serde::{Deserialize, Serialize};
 use sun;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SettingsData {
     pub lat: f32,
     pub lon: f32,
@@ -51,6 +51,17 @@ impl SettingsModelController {
 impl SettingsModelController {
     pub async fn get_data(&self) -> Result<SettingsData> {
         let store = self.control_data_store.lock().unwrap();
+        Ok(store.clone())
+    }
+
+    pub async fn set_data(&self, new_state: SettingsData) -> Result<SettingsData> {
+        let mut store = self.control_data_store.lock().unwrap();
+        store.lat = new_state.lat;
+        store.lon = new_state.lon;
+        store.house_rotation = new_state.house_rotation;
+        store.roof_inclination = new_state.roof_inclination;
+        store.start_value = new_state.start_value;
+        store.end_value = new_state.end_value;
         Ok(store.clone())
     }
 

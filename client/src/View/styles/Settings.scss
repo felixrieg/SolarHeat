@@ -1,0 +1,32 @@
+.settings {
+  text-align: center;
+
+  .settingsForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+
+    label {
+      justify-content: space-between;
+      display: flex;
+      width: 100%;
+    }
+
+    input[type="number"] {
+      width: 30px;
+      height: 20px;
+      align-self: center;
+    }
+    input[type="submit"] {
+      margin-top: 40px;
+      width: 35%;
+      height: 40px;
+      align-self: center;
+    }
+    .settings-label {
+      width: 35%;
+      // text-align: start;
+    }
+  }
+}

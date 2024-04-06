@@ -18,13 +18,13 @@ use tower_http::cors::CorsLayer;
 
 // use control::mod;
 // use crate::control::model::ModelController;
-mod control;
-use control::{control_model::ControlModelController, control_routes_control};
+mod model;
+use model::{control_model::ControlModelController, settings_model::SettingsModelController};
 
 mod error;
 mod helpers;
-mod settings;
-use settings::{settings_model::SettingsModelController, settings_routes_control};
+mod web;
+use web::{control_routes_control, settings_routes_control};
 
 #[tokio::main]
 async fn main() -> Result<()> {

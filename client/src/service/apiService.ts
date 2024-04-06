@@ -9,5 +9,8 @@ export const get = (path: string) => {
 
 export const post = (path: string, body: Object) => {
   console.log("POST", path, body);
-  return axios.post(url + path, body).then((response) => response.data);
+  return axios
+    .post(url + path, body)
+    .then((response) => response.data)
+    .catch(() => "Post failed");
 };

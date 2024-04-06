@@ -7,7 +7,7 @@ use log::info;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    control::control_model::{ControlData, ControlModelController, Modus},
+    model::control_model::{ControlData, ControlModelController, Modus},
     Result,
 };
 

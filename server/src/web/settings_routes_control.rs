@@ -7,22 +7,14 @@ use log::info;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    settings::settings_model::{SettingsData, SettingsModelController},
+    model::settings_model::{SettingsData, SettingsModelController},
     Result,
 };
-
-// pub struct SettingsData {
-//     pub lat: f32,
-//     pub lon: f32,
-//     pub house_rotation: f32,
-//     pub roof_inclination: f32,
-//     pub start_value: f32,
-//     pub end_value: f32,
-// }
 
 pub fn routes(mc: SettingsModelController) -> Router {
     Router::new()
         .route("/", get(get_state))
+        .route("/", post(set_state))
         .route("/position", post(change_pos))
         .route("/rotation", post(change_house_rotation))
         .route("/incline", post(change_roof_inclination))
@@ -42,6 +34,20 @@ async fn get_state(State(mc): State<SettingsModelController>) -> Result<Json<Set
     );
 
     Ok(Json(control_data))
+}
+
+async fn set_state(
+    State(mc): State<SettingsModelController>,
+    Json(new_state): Json<SettingsData>,
+) -> Result<Json<SettingsData>> {
+    info!(
+        "{:<12} - {:?}: {:?}\n",
+        "set_settings", "HANDLER", new_state
+    );
+
+    let new_control_data = mc.set_data(new_state).await?;
+
+    Ok(Json(new_control_data))
 }
 
 #[derive(Debug, Clone, Deserialize)]
