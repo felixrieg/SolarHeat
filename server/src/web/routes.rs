@@ -109,7 +109,7 @@ async fn get_status(State(mc): State<ModelController>) -> Result<Json<StatusResp
                 let later =
                     (get_altitude_in(settings_data.lat as f64, settings_data.lon as f64, |x| {
                         x + 300000
-                    }) > settings_data.end_value as f64);
+                    }) > settings_data.end_value as f64); // 5 minutes later
                 if now && !later {
                     // When switching status to off while modus is single, the modus is set to off
                     mc.set_control_data(ControlData {
@@ -124,5 +124,8 @@ async fn get_status(State(mc): State<ModelController>) -> Result<Json<StatusResp
     };
 
     info!("{:<12} - {:?}", "sun", altitude);
-    Ok(Json(StatusResponse { status: status }))
+    Ok(Json(StatusResponse {
+        status: status,
+        pin: settings_data.pin,
+    }))
 }

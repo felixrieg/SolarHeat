@@ -56,4 +56,5 @@ impl ModelController {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusResponse {
     pub status: bool,
+    pub pin: u32,
 }
