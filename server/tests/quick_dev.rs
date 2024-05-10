@@ -9,25 +9,27 @@ async fn quick_dev() -> Result<()> {
     // hc.do_get("/hello?name=Felix").await?.print().await?;
 
     hc.do_get("/controls").await?.print().await?;
+    hc.do_get("/settings").await?.print().await?;
+    hc.do_get("/status").await?.print().await?;
 
-    let change_modus = hc.do_post(
-        "/modus",
-        json!({
-            "modus": "Continuous"
-        }),
-    );
+    // let change_modus = hc.do_post(
+    //     "/modus",
+    //     json!({
+    //         "modus": "Continuous"
+    //     }),
+    // );
 
-    change_modus.await?.print().await?;
+    // change_modus.await?.print().await?;
 
-    let change_pos = hc.do_post(
-        "/position",
-        json!({
-            "lat": 52.51604,
-            "lon": 13.37691
-        }),
-    );
+    // let change_pos = hc.do_post(
+    //     "/position",
+    //     json!({
+    //         "lat": 52.51604,
+    //         "lon": 13.37691
+    //     }),
+    // );
 
-    change_pos.await?.print().await?;
+    // change_pos.await?.print().await?;
 
     Ok(())
 }

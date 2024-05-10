@@ -1,0 +1,13 @@
+@import "../../variables.scss";
+
+.status {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+
+  .running {
+    color: $color-good;
+  }
+}

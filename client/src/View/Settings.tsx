@@ -14,6 +14,7 @@ const Settings = () => {
   );
   const [start_value, setStart_value] = useState(settings.start_value);
   const [end_value, setEnd_value] = useState(settings.end_value);
+  const [pin, setPin] = useState(settings.pin);
 
   const handleSubmit = (event: any) => {
     console.log(event);
@@ -25,6 +26,7 @@ const Settings = () => {
       roof_inclination,
       start_value,
       end_value,
+      pin,
     };
 
     console.log("new Settings", new_settings);
@@ -38,8 +40,8 @@ const Settings = () => {
   ): ((number: number) => void) => {
     return (x: number) => {
       setter(x);
-      if (settings.sumbitted) {
-        settings.setSumbitted(false);
+      if (settings.submitted) {
+        settings.setSubmitted(false);
       }
     };
   };
@@ -52,6 +54,7 @@ const Settings = () => {
     setRoof_inclination(settings.roof_inclination);
     setStart_value(settings.start_value);
     setEnd_value(settings.end_value);
+    setPin(settings.pin);
   }, [settings]);
 
   return (
@@ -109,7 +112,14 @@ const Settings = () => {
             max={90}
             range
           />
-          <input type="submit" value="Submit" disabled={settings.sumbitted} />
+          <div className="divider" />
+          <SettingsLabel
+            value={pin}
+            setValue={change_value(setPin)}
+            name="pin"
+            label="(RPI) Pin"
+          />
+          <input type="submit" value="Submit" disabled={settings.submitted} />
         </form>
       </div>
     </div>

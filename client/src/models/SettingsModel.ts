@@ -5,4 +5,5 @@ export type Setting = {
   roof_inclination: number;
   start_value: number;
   end_value: number;
+  pin: number;
 };

@@ -3,7 +3,7 @@ import axios from "axios";
 const url = "http://" + window.location.hostname + ":8080/";
 
 export const get = (path: string) => {
-  console.log("GET", path);
+  // console.log("GET", path);
   return axios.get(url + path).then((data) => data.data);
 };
 

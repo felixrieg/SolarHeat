@@ -1,6 +1,6 @@
-#![allow(unused)] // Temporariy
+#![allow(unused)] // Temporary
 
-use std::net::SocketAddr;
+use std::{net::SocketAddr, time::Duration};
 
 use axum::{
     extract::Query,
@@ -11,7 +11,11 @@ use axum::{
 pub use error::{Error, Result};
 use log::{debug, error, info, warn};
 use serde::Deserialize;
-use tokio::net::TcpListener;
+use tokio::{
+    net::TcpListener,
+    spawn, task,
+    time::{self, interval},
+};
 use tower_http::cors::CorsLayer;
 
 //use crate::model::ModelController;
@@ -19,27 +23,22 @@ use tower_http::cors::CorsLayer;
 // use control::mod;
 // use crate::control::model::ModelController;
 mod model;
-use model::{control_model::ControlModelController, settings_model::SettingsModelController};
+use model::model::ModelController;
 
 mod error;
 mod helpers;
 mod web;
-use web::{control_routes_control, settings_routes_control};
+use web::routes;
+
+use crate::model::model::StatusResponse;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init();
 
-    let mc = ControlModelController::new().await?;
-    let settings_controller = SettingsModelController::new().await?;
+    let model = ModelController::new().await?;
 
-    let router = Router::new()
-        .nest(
-            "/settings",
-            settings_routes_control::routes(settings_controller.clone()),
-        )
-        .nest("/controls", control_routes_control::routes(mc.clone()))
-        .layer(CorsLayer::permissive());
+    let router = routes::routes(model.clone()).layer(CorsLayer::permissive());
 
     // Start Server
     let listener = TcpListener::bind("0.0.0.0:8080").await.unwrap();

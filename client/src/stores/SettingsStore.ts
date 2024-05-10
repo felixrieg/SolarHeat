@@ -3,11 +3,10 @@ import { Setting } from "../models/SettingsModel";
 import { get, post } from "../service/apiService";
 
 export interface SettingsStore extends Setting {
-  sumbitted: boolean;
+  submitted: boolean;
   getSettingsAsync: () => Promise<void>;
-  setPosition: () => void;
   setSettings: (settings: Setting) => Promise<void>;
-  setSumbitted: (new_val: boolean) => void;
+  setSubmitted: (new_val: boolean) => void;
 }
 
 export const useSettingsStore = create<SettingsStore>((set) => ({
@@ -17,21 +16,21 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
   roof_inclination: 0,
   start_value: 0,
   end_value: 0,
-  sumbitted: true,
+  submitted: true,
+  pin: 0,
   getSettingsAsync: async () => {
-    get("settings").then((data) => set({ sumbitted: true, ...data }));
+    get("settings").then((data) => set({ submitted: true, ...data }));
   },
-  setPosition: () => {},
   setSettings: async (settings) => {
     post("settings", settings).then((data) =>
-      set({ sumbitted: true, ...data })
+      set({ submitted: true, ...data })
     );
   },
-  setSumbitted: (new_val) => {
-    set({ sumbitted: new_val });
+  setSubmitted: (new_val) => {
+    set({ submitted: new_val });
   },
 }));
 
 get("settings").then((data) =>
-  useSettingsStore.setState({ sumbitted: true, ...data })
+  useSettingsStore.setState({ submitted: true, ...data })
 );
