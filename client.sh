@@ -1,3 +1,3 @@
 #!/bin/bash
 cd client;
-sudo yarn start;
+yarn start;

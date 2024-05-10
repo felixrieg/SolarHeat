@@ -1,8 +1,8 @@
 #!/bin/bash
 echo "Starting server and client..."
-./start_server.sh &
+bash ./start_server.sh &
 
-./client.sh &
+bash ./client.sh &
 
 while :; 
 do 
