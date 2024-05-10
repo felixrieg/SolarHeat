@@ -29,7 +29,7 @@ impl Default for SettingsData {
             roof_inclination: 0.0,
             start_value: 5.0,
             end_value: 5.0,
-            pin: 0,
+            pin: 25,
         }
     }
 }
