@@ -1,17 +1,28 @@
-FROM cimg/rust:1.78.0-node
+# Section for the build
+FROM cimg/rust:1.78.0-node AS build
+WORKDIR /app
 
 # Setup the working directory
 COPY . .
-ENV PATH /app/client/node_modules/.bin:$PATH
-RUN npm install -g serve
+# ENV PATH /app/client/node_modules/.bin:$PATH
 
-# Build the project
+# Build the project & clean
 RUN cd ./server && pwd && cargo build --release
-RUN cd ./client && npm install && npm run build
+RUN cd ./client && npm install && npm run build && npm run clean
+
+# Section for the final image
+FROM node:bookworm-slim
+
+# Copy complete builds from the previous stage
+COPY --from=build /app/client/build ./build
+COPY --from=build /app/server/target/release/server ./server
+
+# Install serve for serving the client
+RUN npm install -g serve
 
 # Expose the ports
 EXPOSE 8080
 EXPOSE 3000
 
-# Run the project
-CMD ./server/target/release/server & serve -p 3000 -s ./client/build
+# Execution
+CMD ./server & serve -p 3000 -s ./build

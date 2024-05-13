@@ -5,14 +5,15 @@ do
     response=$(curl -s "http://localhost:8080/status")
     status=$(echo $response | jq -r '.status')
     pin=$(echo $response | jq -r '.pin')
-    # echo "Status: $status, Pin: $pin"
 
+    // Check if we got a response
     if [ -z "$response" ]
     then
         echo "No response"
     else
         echo "Recieved response - Status: $status, Pin: $pin"
         
+        // Check if raspi-gpio is installed
         if command -v raspi-gpio &> /dev/null
         then
             echo $(raspi-gpio get $pin)
