@@ -24,7 +24,6 @@ jobs:
       contents: write
       pull-requests: write
 
-
     outputs:
       skipped: ${{ steps.changelog.outputs.skipped }}
       tag: ${{ steps.changelog.outputs.tag }}
@@ -74,7 +73,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-release:
+  release:
     name: Release
     needs: changelog
     if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
@@ -153,5 +152,3 @@ release:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-  
