@@ -7,7 +7,7 @@ COPY . .
 # ENV PATH /app/client/node_modules/.bin:$PATH
 
 # Build the project & clean
-RUN cd ./server && pwd && cargo build --release
+RUN cd ./server && cargo clean && ls -la && cargo build --release
 RUN cd ./client && npm install && npm run build && npm run clean
 
 # Section for the final image
