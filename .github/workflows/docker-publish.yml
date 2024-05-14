@@ -64,14 +64,14 @@ jobs:
         run: |
           gh pr review --approve ${{ env.PR_BRANCH }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_OWNER_TOKEN }}
 
       - name: Merge Changelog PR
         if: steps.changelog.outputs.skipped == 'false'
         run: |
           gh pr merge --squash --auto --delete-branch ${{ env.PR_BRANCH }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_OWNER_TOKEN }}
 
   release:
     name: Release
@@ -103,7 +103,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_OWNER_TOKEN }}
           tag_name: ${{ needs.changelog.outputs.tag }}
           prerelease: false
           draft: false
@@ -132,7 +132,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GH_OWNER_TOKEN }}
 
       - name: Setup Docker Metadata
         uses: docker/metadata-action@dbef88086f6cef02e264edb7dbf63250c17cef6c # v5
