@@ -8,5 +8,8 @@
     "httpc",
     "suncalc",
     "unixtime"
+  ],
+  "conventionalCommits.scopes": [
+    "Readme"
   ]
 }
