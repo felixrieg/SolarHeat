@@ -12,102 +12,101 @@ on:
     tags: ["v*.*.*"]
 
 env:
-  GO_VERSION: 1.21.3
-  APP_NAME: solarHeat
+  APP_NAME: SolarHeat
 
 jobs:
-  # changelog:
-  #   name: Changelog
-  #   if: github.event_name != 'pull_request'
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: write
-  #     pull-requests: write
+  changelog:
+    name: Changelog
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
-  #   outputs:
-  #     skipped: ${{ steps.changelog.outputs.skipped }}
-  #     tag: ${{ steps.changelog.outputs.tag }}
-  #     clean_changelog: ${{ steps.changelog.outputs.clean_changelog }}
-  #     version: ${{ steps.changelog.outputs.version }}
+    outputs:
+      skipped: ${{ steps.changelog.outputs.skipped }}
+      tag: ${{ steps.changelog.outputs.tag }}
+      clean_changelog: ${{ steps.changelog.outputs.clean_changelog }}
+      version: ${{ steps.changelog.outputs.version }}
 
-  #   env:
-  #     PR_BRANCH: release-ci-${{ github.sha }}
+    env:
+      PR_BRANCH: release-ci-${{ github.sha }}
 
-  #   steps:
-  #     - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-  #     - name: Create Branch
-  #       run: |
-  #         git checkout -b ${{ env.PR_BRANCH }}
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: Create Branch
+        run: |
+          git checkout -b ${{ env.PR_BRANCH }}
 
-  #     - name: Create Changelog
-  #       uses: TriPSs/conventional-changelog-action@dd734f74fce61a6e02f821ee1b5930bc79a23534 # v5
-  #       id: changelog
-  #       with:
-  #         github-token: ${{ github.token }}
-  #         git-user-name: "github-actions[bot]"
-  #         git-user-email: "github-actions[bot]@users.noreply.github.com"
-  #         git-branch: ${{ env.PR_BRANCH }}
-  #         skip-git-pull: true
-  #         output-file: false
-  #         version-file: .github/package.yaml
-  #         create-summary: true
+      - name: Create Changelog
+        uses: TriPSs/conventional-changelog-action@dd734f74fce61a6e02f821ee1b5930bc79a23534 # v5
+        id: changelog
+        with:
+          github-token: ${{ github.token }}
+          git-user-name: "github-actions[bot]"
+          git-user-email: "github-actions[bot]@users.noreply.github.com"
+          git-branch: ${{ env.PR_BRANCH }}
+          skip-git-pull: true
+          output-file: false
+          version-file: .github/package.yaml
+          create-summary: true
 
-  #     - name: Create Changelog PR
-  #       if: steps.changelog.outputs.skipped == 'false'
-  #       run: |
-  #         gh pr create --base main --head ${{ env.PR_BRANCH }} --title 'chore(release): ${{ steps.changelog.outputs.tag }} [skip-ci]' --body '${{ steps.changelog.outputs.clean_changelog }}'
-  #       env:
-  #         GH_TOKEN: ${{ github.token }}
+      - name: Create Changelog PR
+        if: steps.changelog.outputs.skipped == 'false'
+        run: |
+          gh pr create --base main --head ${{ env.PR_BRANCH }} --title 'chore(release): ${{ steps.changelog.outputs.tag }} [skip-ci]' --body '${{ steps.changelog.outputs.clean_changelog }}'
+        env:
+          GH_TOKEN: ${{ github.token }}
 
-  #     - name: Approve Changelog PR
-  #       if: steps.changelog.outputs.skipped == 'false'
-  #       run: |
-  #         gh pr review --approve ${{ env.PR_BRANCH }}
-  #       env:
-  #         GH_TOKEN: ${{ secrets.GH_OWNER_TOKEN }}
+      - name: Approve Changelog PR
+        if: steps.changelog.outputs.skipped == 'false'
+        run: |
+          gh pr review --approve ${{ env.PR_BRANCH }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_OWNER_TOKEN }}
 
-  #     - name: Merge Changelog PR
-  #       if: steps.changelog.outputs.skipped == 'false'
-  #       run: |
-  #         gh pr merge --squash --auto --delete-branch ${{ env.PR_BRANCH }}
-  #       env:
-  #         GH_TOKEN: ${{ secrets.GH_OWNER_TOKEN }}
+      - name: Merge Changelog PR
+        if: steps.changelog.outputs.skipped == 'false'
+        run: |
+          gh pr merge --squash --auto --delete-branch ${{ env.PR_BRANCH }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_OWNER_TOKEN }}
 
-  # release:
-  #   name: Release
-  #   needs: changelog
-  #   if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: write
-  #     packages: write
-  #     pull-requests: write
+  release:
+    name: Release
+    needs: changelog
+    if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
 
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-  #     - name: Create Release
-  #       uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
-  #       with:
-  #         token: ${{ secrets.GH_OWNER_TOKEN }}
-  #         tag_name: ${{ needs.changelog.outputs.tag }}
-  #         prerelease: false
-  #         draft: false
-  #         files: bin/*
-  #         generate_release_notes: true
-  #         name: ${{ needs.changelog.outputs.tag }}
-  #         body: |
-  #           <details>
-  #             <summary>🤖 Autogenerated Conventional Changelog</summary>
+      - name: Create Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
+        with:
+          token: ${{ secrets.GH_OWNER_TOKEN }}
+          tag_name: ${{ needs.changelog.outputs.tag }}
+          prerelease: false
+          draft: false
+          files: bin/*
+          generate_release_notes: true
+          name: ${{ needs.changelog.outputs.tag }}
+          body: |
+            <details>
+              <summary>🤖 Autogenerated Conventional Changelog</summary>
 
-  #           ${{ needs.changelog.outputs.clean_changelog }}
-  #           </details>
+            ${{ needs.changelog.outputs.clean_changelog }}
+            </details>
 
   deploy:
     name: Deploy Image
-    # needs: changelog
-    # if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
+    needs: changelog
+    if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
     runs-on: ubuntu-latest
     container:
       image: docker:26.0.0
@@ -132,8 +131,8 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/${{ env.APP_NAME }}
           tags: |
             latest
-            # ${{ needs.changelog.outputs.version }}
-            # ${{ github.sha }}
+            ${{ needs.changelog.outputs.version }}
+            ${{ github.sha }}
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
