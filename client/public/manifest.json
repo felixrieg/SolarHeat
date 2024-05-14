@@ -1,0 +1,6 @@
+{
+  "short_name": "SolarHeat",
+  "name": "SolarHeat",
+  "start_url": ".",
+  "display": "standalone"
+}

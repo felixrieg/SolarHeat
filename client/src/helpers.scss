@@ -1,0 +1,49 @@
+@import "./variables.scss";
+.headline {
+  font-size: calc(15px + 3vmin);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+input {
+  border-radius: 10px;
+  padding: 5px;
+  text-align: center;
+}
+
+input[type="number"] {
+  appearance: none;
+  -moz-appearance: textfield;
+}
+
+.clickable {
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
+
+.button {
+  padding: 8px 12px;
+}
+
+.divider {
+  height: 2px;
+  width: 90%;
+  background-color: $color-accent;
+  justify-self: center;
+  align-self: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 2px;
+  margin-left: 5%;
+}
+
+.hspace {
+  width: 5%;
+}
+
+.vspace {
+  height: 5vh;
+}

@@ -1,0 +1,16 @@
+{
+  "rust-analyzer.linkedProjects": [
+    "./server/Cargo.toml"
+  ],
+  "cSpell.words": [
+    "gpio",
+    "GPIO",
+    "httpc",
+    "suncalc",
+    "unixtime"
+  ],
+  "conventionalCommits.scopes": [
+    "Readme",
+    "Actions"
+  ]
+}
