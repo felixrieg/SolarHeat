@@ -110,6 +110,7 @@ jobs:
     # if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
     runs-on: ubuntu-latest
     container:
+      image: docker:26.0.0
       options: --user root
 
     steps:
