@@ -11,6 +11,15 @@ on:
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
 
+permissions:
+  contents: write
+  packages: write
+  pull-requests: write
+
+env:
+  GO_VERSION: 1.21.3
+  APP_NAME: solarHeat
+
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
@@ -18,77 +27,142 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build:
+  changelog:
+    name: Changelog
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
+      contents: write
+      pull-requests: write
+
+
+    outputs:
+      skipped: ${{ steps.changelog.outputs.skipped }}
+      tag: ${{ steps.changelog.outputs.tag }}
+      clean_changelog: ${{ steps.changelog.outputs.clean_changelog }}
+      version: ${{ steps.changelog.outputs.version }}
+
+    env:
+      PR_BRANCH: release-ci-${{ github.sha }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: Create Branch
+        run: |
+          git checkout -b ${{ env.PR_BRANCH }}
 
-      # Install the cosign tool except on PR
-      # https://github.com/sigstore/cosign-installer
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v3.1.1
+      - name: Create Changelog
+        uses: TriPSs/conventional-changelog-action@dd734f74fce61a6e02f821ee1b5930bc79a23534 # v5
+        id: changelog
         with:
-          cosign-release: "v2.1.1"
+          github-token: ${{ github.token }}
+          git-user-name: "github-actions[bot]"
+          git-user-email: "github-actions[bot]@users.noreply.github.com"
+          git-branch: ${{ env.PR_BRANCH }}
+          skip-git-pull: true
+          output-file: false
+          version-file: .github/package.yaml
+          create-summary: true
 
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-        with:
-          buildkit: false
+      - name: Create Changelog PR
+        if: steps.changelog.outputs.skipped == 'false'
+        run: |
+          gh pr create --base main --head ${{ env.PR_BRANCH }} --title 'chore(release): ${{ steps.changelog.outputs.tag }} [skip-ci]' --body '${{ steps.changelog.outputs.clean_changelog }}'
+        env:
+          GH_TOKEN: ${{ github.token }}
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+      - name: Approve Changelog PR
+        if: steps.changelog.outputs.skipped == 'false'
+        run: |
+          gh pr review --approve ${{ env.PR_BRANCH }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge Changelog PR
+        if: steps.changelog.outputs.skipped == 'false'
+        run: |
+          gh pr merge --squash --auto --delete-branch ${{ env.PR_BRANCH }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+release:
+    name: Release
+    needs: changelog
+    if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Setup Go
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
+          go-version: ${{ env.GO_VERSION }}
+      - name: Install Dependencies
+        run: go mod download
+      - name: Verify Dependencies
+        run: go mod verify
+      - name: Cross-Build ${{ env.APP_NAME }}
+        run: |
+          chmod +x ./scripts/build.sh
+          CROSS_BUILD=true APP_NAME=${{ env.APP_NAME }} VERSION=${{ needs.changelog.outputs.version }} ./scripts/build.sh
+
+      - name: Create Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ needs.changelog.outputs.tag }}
+          prerelease: false
+          draft: false
+          files: bin/*
+          generate_release_notes: true
+          name: ${{ needs.changelog.outputs.tag }}
+          body: |
+            <details>
+              <summary>🤖 Autogenerated Conventional Changelog</summary>
+
+            ${{ needs.changelog.outputs.clean_changelog }}
+            </details>
+
+  deploy:
+    name: Deploy Image
+    needs: changelog
+    if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Login ghcr.io
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
-      - name: Extract Docker metadata
+      - name: Setup Docker Metadata
+        uses: docker/metadata-action@dbef88086f6cef02e264edb7dbf63250c17cef6c # v5
         id: meta
-        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: |
+            ghcr.io/${{ github.repository_owner }}/${{ env.APP_NAME }}
+          tags: |
+            latest
+            ${{ needs.changelog.outputs.version }}
+            ${{ github.sha }}
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-      # Sign the resulting Docker image digest except on PRs.
-      # This will only write to the public Rekor transparency log when the Docker
-      # repository is public to avoid leaking data.  If you would like to publish
-      # transparency data even for private images, pass --force to cosign below.
-      # https://github.com/sigstore/cosign
-      - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        # This step uses the identity token to provision an ephemeral certificate
-        # against the sigstore community Fulcio instance.
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+  
