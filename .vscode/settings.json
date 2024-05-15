@@ -6,6 +6,7 @@
     "gpio",
     "GPIO",
     "httpc",
+    "solarheat",
     "suncalc",
     "unixtime"
   ],

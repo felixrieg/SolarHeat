@@ -6,14 +6,14 @@ do
     status=$(echo $response | jq -r '.status')
     pin=$(echo $response | jq -r '.pin')
 
-    // Check if we got a response
+    # Check if we got a response
     if [ -z "$response" ]
     then
         echo "No response"
     else
         echo "Recieved response - Status: $status, Pin: $pin"
         
-        // Check if raspi-gpio is installed
+        # Check if raspi-gpio is installed
         if command -v raspi-gpio &> /dev/null
         then
             echo $(raspi-gpio get $pin)
