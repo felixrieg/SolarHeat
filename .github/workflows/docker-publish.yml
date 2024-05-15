@@ -74,10 +74,6 @@ jobs:
     needs: changelog
     if: github.event_name != 'pull_request' && needs.changelog.outputs.skipped == 'false'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-      pull-requests: write
 
     steps:
       - name: Checkout
@@ -89,7 +85,7 @@ jobs:
           token: ${{ secrets.GH_OWNER_TOKEN }}
           tag_name: ${{ needs.changelog.outputs.tag }}
           prerelease: false
-          draft: false
+          draft: true
           files: bin/*
           generate_release_notes: true
           name: ${{ needs.changelog.outputs.tag }}
@@ -132,5 +128,6 @@ jobs:
         with:
           context: .
           push: true
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v7
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
