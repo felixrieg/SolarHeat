@@ -13,10 +13,10 @@ All you have to do is run this Project and connect your RPI in a way to control 
 To run just the control website:
 > :warning: You may need root privileges to run the docker container on port 80. If that is not an option replace -p 80:3000 with -p 3000:3000
 
-`docker run -dit --name solarheat -p 8080:8080 -p 80:3000 ghcr.io/felixrieg/solarheat:latest`{:.bash}
+`docker run -dit --name solarheat -p 8080:8080 -p 80:3000 ghcr.io/felixrieg/solarheat:latest`
 
 To control the RPI GIO pins run:
-`curl -o- https://raw.githubusercontent.com/felixrieg/SolarHeat/main/GPIO.sh | bash`{:.bash}
+`curl -o- https://raw.githubusercontent.com/felixrieg/SolarHeat/main/GPIO.sh | bash`
 
 I myself have put something like this in my .bashrc on my RPI:
 
