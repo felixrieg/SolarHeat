@@ -26,4 +26,4 @@ EXPOSE 8080
 EXPOSE 3000
 
 # Execution
-CMD ./server & serve -p 3000 -s ./build &
+CMD ./server & serve -p 3000 -s ./build
