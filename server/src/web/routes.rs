@@ -17,6 +17,7 @@ use crate::{
 // Import the missing `Handler` trait
 pub fn routes(mc: ModelController) -> Router {
     Router::new()
+        .route("/ping", get(ping))
         .route("/settings", get(get_settings))
         .route("/settings", post(set_settings))
         .route("/controls", get(get_controls))
@@ -24,6 +25,10 @@ pub fn routes(mc: ModelController) -> Router {
         .route("/controls", post(set_controls))
         .route("/status", get(get_status))
         .with_state(mc)
+}
+
+async fn ping() -> Result<String> {
+    Ok(String::from("Hello, World!"))
 }
 
 async fn get_settings(State(mc): State<ModelController>) -> Result<Json<SettingsData>> {

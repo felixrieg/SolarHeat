@@ -19,11 +19,11 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
   submitted: true,
   pin: 0,
   getSettingsAsync: async () => {
-    get("settings").then((data) => set({ submitted: true, ...data }));
+    get("settings").then((data) => data && set({ submitted: true, ...data }));
   },
   setSettings: async (settings) => {
-    post("settings", settings).then((data) =>
-      set({ submitted: true, ...data })
+    post("settings", settings).then(
+      (data) => data && set({ submitted: true, ...data })
     );
   },
   setSubmitted: (new_val) => {
@@ -31,6 +31,6 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
   },
 }));
 
-get("settings").then((data) =>
-  useSettingsStore.setState({ submitted: true, ...data })
+get("settings").then(
+  (data) => data && useSettingsStore.setState({ submitted: true, ...data })
 );

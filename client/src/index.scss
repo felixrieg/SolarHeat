@@ -10,9 +10,12 @@ body {
   background-color: $color-background;
   color: $color-color;
   transition: background-color 0.5s ease-in;
+  width: 100vw;
+  height: 100vh;
 }
 
-.App {
+.App,
+#root {
   min-height: 100vh;
   width: 100%;
   font-size: calc(12px + 2vmin);
