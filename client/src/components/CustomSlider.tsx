@@ -17,9 +17,6 @@ type Props = {
 const CustomSlider = (props: Props) => {
   let min = props.values ? 0 : props.min;
   let max = props.values ? props.values.length - 1 : props.max;
-
-  console.log(min, max);
-
   return (
     <div className="customSliderContainer">
       <div className="customSlider">
