@@ -13,7 +13,8 @@
   "conventionalCommits.scopes": [
     "Readme",
     "Actions",
-    "frontend"
+    "frontend",
+    "backend"
   ],
   "editor.tabSize": 2
 }

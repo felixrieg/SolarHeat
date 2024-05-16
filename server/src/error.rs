@@ -10,6 +10,8 @@ pub type Result<T> = core::result::Result<T, Error>;
 pub enum Error {
     DefaultError,
     SerdeError,
+    IOError,
+    UnknownError,
 }
 
 impl IntoResponse for Error {
@@ -23,5 +25,11 @@ impl From<serde_json::Error> for Error {
     fn from(error: serde_json::Error) -> Self {
         error!("{:<12} - {:?}\n", "FROM_SERDE", error);
         Error::SerdeError
+    }
+}
+impl From<std::io::Error> for Error {
+    fn from(error: std::io::Error) -> Self {
+        error!("{:<12} - {:?}\n", "FROM_IO", error);
+        Error::IOError
     }
 }

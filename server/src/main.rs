@@ -8,10 +8,12 @@ use axum::{
     routing::get,
     Router,
 };
+
 pub use error::{Error, Result};
 use log::{debug, error, info, warn};
 use serde::Deserialize;
 use tokio::{
+    fs,
     net::TcpListener,
     spawn, task,
     time::{self, interval},
@@ -25,18 +27,21 @@ use tower_http::cors::CorsLayer;
 mod model;
 use model::model::ModelController;
 
+mod constants;
 mod error;
 mod helpers;
 mod web;
 use web::routes;
 
-use crate::model::model::StatusResponse;
+use crate::{constants::STORAGE_FILE, model::model::StatusResponse};
 
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init();
 
-    let model = ModelController::new().await?;
+    let model = ModelController::load(STORAGE_FILE)
+        .await
+        .unwrap_or_default();
 
     let router = routes::routes(model.clone()).layer(CorsLayer::permissive());
 

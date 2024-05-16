@@ -52,7 +52,7 @@ async fn set_settings(
     );
 
     let new_settings_data = mc.set_settings_data(new_state).await?;
-
+    mc.save_default().await?;
     Ok(Json(new_settings_data))
 }
 
@@ -77,7 +77,7 @@ async fn set_controls(
     );
 
     let new_control_data = mc.set_control_data(new_state).await?;
-
+    mc.save_default().await?;
     Ok(Json(new_control_data))
 }
 
