@@ -3,10 +3,8 @@ import { Setting } from "../models/SettingsModel";
 import { get, post } from "../service/apiService";
 
 export interface SettingsStore extends Setting {
-  submitted: boolean;
   getSettingsAsync: () => Promise<void>;
   setSettings: (settings: Setting) => Promise<void>;
-  setSubmitted: (new_val: boolean) => void;
 }
 
 export const useSettingsStore = create<SettingsStore>((set) => ({
@@ -25,9 +23,6 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
     post("settings", settings).then(
       (data) => data && set({ submitted: true, ...data })
     );
-  },
-  setSubmitted: (new_val) => {
-    set({ submitted: new_val });
   },
 }));
 

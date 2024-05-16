@@ -6,6 +6,7 @@ import { Setting } from "../models/SettingsModel";
 
 const Settings = () => {
   const settings = useSettingsStore((state) => state);
+  const [submitted, setSubmitted] = useState(true);
   const [lat, setLat] = useState(settings.lat);
   const [lon, setLon] = useState(settings.lon);
   const [house_rotation, setHouse_rotation] = useState(settings.house_rotation);
@@ -17,8 +18,6 @@ const Settings = () => {
   const [pin, setPin] = useState(settings.pin);
 
   const handleSubmit = (event: any) => {
-    console.log(event);
-
     const new_settings: Setting = {
       lat,
       lon,
@@ -28,10 +27,7 @@ const Settings = () => {
       end_value,
       pin,
     };
-
-    console.log("new Settings", new_settings);
     settings.setSettings(new_settings);
-
     event.preventDefault();
   };
 
@@ -40,14 +36,12 @@ const Settings = () => {
   ): ((number: number) => void) => {
     return (x: number) => {
       setter(x);
-      if (settings.submitted) {
-        settings.setSubmitted(false);
-      }
+      setSubmitted(false);
     };
   };
 
   useEffect(() => {
-    console.log(settings);
+    setSubmitted(true);
     setLat(settings.lat);
     setLon(settings.lon);
     setHouse_rotation(settings.house_rotation);
@@ -86,7 +80,7 @@ const Settings = () => {
           />
           <SettingsLabel
             value={roof_inclination}
-            setValue={setRoof_inclination}
+            setValue={change_value(setRoof_inclination)}
             name="roof_inclination"
             label="Roof inclination"
             min={-90}
@@ -119,7 +113,7 @@ const Settings = () => {
             name="pin"
             label="(RPI) Pin"
           />
-          <input type="submit" value="Submit" disabled={settings.submitted} />
+          <input type="submit" value="Submit" disabled={submitted} />
         </form>
       </div>
     </div>

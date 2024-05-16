@@ -22,7 +22,10 @@ const Home = () => {
 
         <div
           className="clickable settingsbutton"
-          onClick={() => setShowSettings(true)}
+          onClick={() => {
+            getSettingsAsync();
+            setShowSettings(true);
+          }}
         >
           <SettingsIcon />
         </div>
