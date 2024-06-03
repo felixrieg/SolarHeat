@@ -4,7 +4,11 @@ import "./styles/Settings.scss";
 import SettingsLabel from "../components/SettingsLabel";
 import { Setting } from "../models/SettingsModel";
 
-const Settings = () => {
+type Props = {
+  close?: () => void;
+};
+
+const Settings = ({ close }: Props) => {
   const settings = useSettingsStore((state) => state);
   const [submitted, setSubmitted] = useState(true);
   const [lat, setLat] = useState(settings.lat);
@@ -29,6 +33,7 @@ const Settings = () => {
     };
     settings.setSettings(new_settings);
     event.preventDefault();
+    close && close();
   };
 
   const change_value = (

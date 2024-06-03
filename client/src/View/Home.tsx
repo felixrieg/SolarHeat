@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Controls from "./Controls";
 import SlideIn from "../components/SlideIn";
 import Settings from "./Settings";
@@ -36,7 +36,12 @@ const Home = () => {
             getSettingsAsync();
           }}
         >
-          <Settings />
+          <Settings
+            close={() => {
+              setShowSettings(false);
+              getSettingsAsync();
+            }}
+          />
         </SlideIn>
       </div>
     </div>

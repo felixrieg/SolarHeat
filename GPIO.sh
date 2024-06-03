@@ -35,14 +35,17 @@ do
             # Something changed
             if [ "$oldPin" != "$pin" ]
             then
-                newOutput="$newOutput\n\tset old pin($oldPin) low: $(raspi-gpio set $pin op dl)"
+                newOutput="$newOutput\n\tset old pin($oldPin) low"
+                raspi-gpio set $pin op d
             fi
 
             if [ "$status" == "true" ]
             then
-                newOutput="$newOutput\n\tset pin($pin) high: $(raspi-gpio set $pin op dh)"
+                newOutput="$newOutput\n\tset pin($pin) high"
+                raspi-gpio set $pin op dh
             else
-                newOutput="$newOutput\n\tset pin($pin) low: $(raspi-gpio set $pin op dl)"
+                newOutput="$newOutput\n\tset pin($pin) low"
+                raspi-gpio set $pin op dl
             fi
 
             oldPin=$pin

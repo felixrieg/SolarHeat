@@ -18,6 +18,7 @@ const Status = () => {
     return () => {
       clearInterval(interval);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

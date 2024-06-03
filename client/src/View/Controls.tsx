@@ -14,6 +14,7 @@ const Controls = () => {
 
   useEffect(() => {
     setModus(possibleModi.findIndex((x) => x === controls.modus));
+    // eslint-disable-next-line
   }, [controls]);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const Controls = () => {
     return () => {
       clearInterval(interval);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
