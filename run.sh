@@ -1,20 +1,28 @@
 #!/bin/bash
 
+# Start the solarheat container
+sudo docker run -dit --pull=always --rm -p 8080:8080 -p 80:3000 -v .:/storage ghcr.io/felixrieg/solarheat:latest &
+
 lastOutput=""
 oldPin="25"
 oldStatus="false"
 
+CLIENTOUT="/tmp/solarheatclient.out"
+echo $CLIENTOUT
+echo -e "$(date '+%Y-%m-%d %H:%M:%S') -  Starting client"  >> $CLIENTOUT
+
+
 # Check if raspi-gpio is installed
 if ! command -v raspi-gpio &> /dev/null
 then
-    echo "raspi-gpio not found, please install it"
+    echo "raspi-gpio not found, please install it" >> $CLIENTOUT
     exit 1
 fi
 
 # Check if jq is installed
 if ! command -v jq &> /dev/null
 then
-    echo "jq not found, please install it"
+    echo "jq not found, please install it" >> $CLIENTOUT
     exit 1
 fi
 
@@ -55,7 +63,7 @@ do
 
     if [ "$lastOutput" != "$newOutput" ] && [ "$newOutput" != "" ]
     then
-        echo -e "$(date '+%Y-%m-%d %H:%M:%S') -  $newOutput"
+        echo -e "$(date '+%Y-%m-%d %H:%M:%S') -  $newOutput" >> $CLIENTOUT
         lastOutput=$newOutput
     fi
     sleep 3; 

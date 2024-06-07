@@ -23,14 +23,14 @@ If you want to keep your settings when restarting your RPI, just add `-v /any/fo
 docker run -dit --pull=always --rm -p 8080:8080 -p 80:3000 -v ~/Git/SolarHeat/server/storage:/storage ghcr.io/felixrieg/solarheat:latest
 ```
 
-To control the RPI GIO pins run:
-`curl -o- https://raw.githubusercontent.com/felixrieg/SolarHeat/main/GPIO.sh | bash`
+To control the RPI GIO look at my script:
+`curl -o- https://raw.githubusercontent.com/felixrieg/SolarHeat/main/run.sh | bash`
+This script starts the website and controls the GPIO pins.
 
-I myself have put something like this in /etc/rc.local on my RPI:
+I myself have put this in /etc/rc.local on my RPI:
 
 ``` bash
-sudo docker run -dit --pull=always --rm -p 8080:8080 -p 80:3000 -v ~/server/storage:/storage ghcr.io/felixrieg/solarheat:latest &
-curl -o- https://raw.githubusercontent.com/felixrieg/SolarHeat/main/GPIO.sh | bash &
+curl -o- https://raw.githubusercontent.com/felixrieg/SolarHeat/main/run.sh | bash &
 ```
 
 Enjoy the convenience and energy savings that SolarHeat brings to your home heating system. Harness the power of the sun to efficiently control your heat pump and reduce your carbon footprint.
