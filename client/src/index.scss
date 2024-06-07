@@ -16,10 +16,14 @@ body {
 
 .App,
 #root {
-  min-height: 100vh;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  overflow: auto;
   font-size: calc(12px + 2vmin);
-  @media only screen and (max-width: $tablet-size) {
-    min-height: calc(100vh - 80px);
-  }
+  position: relative;
+  top: 0;
+  // @media only screen and (max-width: $tablet-size) {
+  //   min-height: calc(100vh - 80px);
+  // }
 }

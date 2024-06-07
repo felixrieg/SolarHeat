@@ -1,7 +1,6 @@
 @import "./variables.scss";
 .headline {
   font-size: calc(15px + 3vmin);
-  margin-bottom: 30px;
   text-align: center;
 }
 
@@ -46,4 +45,30 @@ input[type="number"] {
 
 .vspace {
   height: 5vh;
+}
+
+.onlyPhone {
+  @media only screen and (min-width: $tablet-size) {
+    display: none;
+  }
+}
+
+.notPhone {
+  @media only screen and (max-width: $tablet-size) {
+    display: none;
+  }
+}
+
+select.invisibleSelect {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  font-size: inherit;
+  background-color: inherit;
+  border: none;
+  text-align: center;
+  text-align: -webkit-center;
+  color: $color-accent;
+  width: fit-content;
+  text-align-last: center;
 }

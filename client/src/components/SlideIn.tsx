@@ -9,14 +9,6 @@ type Props = {
 };
 
 const SlideIn = (props: Props) => {
-  useEffect(() => {
-    if (props.show) {
-      document.body.style.backgroundColor = "#1F2041";
-    } else {
-      document.body.style.backgroundColor = "#E9D2C0";
-    }
-  }, [props.show]);
-
   return (
     <div
       className={

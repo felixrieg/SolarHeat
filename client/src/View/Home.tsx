@@ -6,6 +6,7 @@ import "./styles/Home.scss";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Status from "./Status";
 import { useSettingsStore } from "../stores/SettingsStore";
+import WidgetContainer from "../components/WidgetContainer";
 
 const Home = () => {
   const getSettingsAsync = useSettingsStore((state) => state.getSettingsAsync);
@@ -13,22 +14,19 @@ const Home = () => {
 
   return (
     <div className="Home">
-      <div className="Content">
+      <div className="header">
         <div className="headline">SolarHeat</div>
-        <Status />
-        <div className="vspace"></div>
-        <div className="divider" />
-        <Controls />
-
-        <div
-          className="clickable settingsbutton"
-          onClick={() => {
-            getSettingsAsync();
-            setShowSettings(true);
-          }}
-        >
-          <SettingsIcon />
+      </div>
+      <div className="Content">
+        <div className="homeGrid">
+          <WidgetContainer>
+            <Status />
+          </WidgetContainer>
+          <WidgetContainer>
+            <Controls />
+          </WidgetContainer>
         </div>
+
         <SlideIn
           show={showSettings}
           onClose={() => {
@@ -43,6 +41,17 @@ const Home = () => {
             }}
           />
         </SlideIn>
+      </div>
+      <div className="footer">
+        <div
+          className="clickable"
+          onClick={() => {
+            getSettingsAsync();
+            setShowSettings(true);
+          }}
+        >
+          <SettingsIcon />
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useControlStore } from "../stores/ControlStore";
 import { Modus } from "../models/ControlModels";
-import CustomSlider from "../components/CustomSlider";
 import "./styles/Controls.scss";
 
 const Controls = () => {
@@ -27,22 +26,33 @@ const Controls = () => {
     // eslint-disable-next-line
   }, []);
 
+  const onChange = (v: any) => {
+    console.log(
+      "new value",
+      v.target.value,
+      possibleModi[+v.target.value],
+      modus
+    );
+    controls?.setModus &&
+      controls?.setModus(possibleModi[+v.target.value] ?? Modus.Off);
+    // setModus(v);
+  };
+
   return (
     <div className="Controls">
-      <CustomSlider
-        left={Modus.Off}
-        right={Modus.On}
-        label="Modus: "
-        showCurrent
-        values={possibleModi}
+      <div>Modus:</div>
+      <select
+        name="modus"
+        className="invisibleSelect"
+        onChange={onChange}
         value={modus}
-        setValue={(v) => {
-          console.log("new value", v, controls, controls.setModus);
-          controls?.setModus &&
-            controls?.setModus(possibleModi[v] ?? Modus.Off);
-          // setModus(v);
-        }}
-      />
+      >
+        {possibleModi.map((m, i) => (
+          <option key={i} value={i}>
+            {m}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };

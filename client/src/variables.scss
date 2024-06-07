@@ -1,26 +1,20 @@
-
 // Z-index
 $z-SlideIn: 100;
-
+$z-onTop: 90;
 
 // Colors
-$color-error: #A8201A;
-$color-good: #678E6C;
+$color-error: #a8201a;
+$color-ok: #678e6c;
 
-$color-background: #E9D2C0;
-$color-color: #1F2041;
-$color-accent: #7899D4;
+$color-background: #f5f5f5;
+$color-secondary-background: #d6e8ea;
+$color-color: #264e70;
+$color-accent: #7899d4;
+$color-secondary-accent: #fdebd3;
+$color-third-accent: #f9b4ab;
 
-$color-one: #B1B6CA;
-$color-two: #5DA271;
-$color-three: #C84630;
-$color-four: #fff5d6;
-$color-five: #8D94A5;
-$color-six: #774936;
-
-$color-inverted-background: #1F2041;
-$color-inverted-color: #E9D2C0;
-
+$color-inverted-background: #264e70;
+$color-inverted-color: #f5f5f5;
 
 // Responsive Sizes
 $phone-size: 320px;
