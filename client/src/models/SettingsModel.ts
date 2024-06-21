@@ -6,4 +6,5 @@ export type Setting = {
   start_value: number;
   end_value: number;
   pin: number;
+  default_high: boolean;
 };

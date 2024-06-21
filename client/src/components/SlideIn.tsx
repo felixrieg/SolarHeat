@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import "./styles/SlideIn.scss";
 
 type Props = {
@@ -21,7 +21,7 @@ const SlideIn = (props: Props) => {
         <div className="SlideInClose clickable" onClick={props.onClose}>
           X
         </div>
-        <div className="SlideInContent">{props.children}</div>
+        <div className="SlideInContent scrollable">{props.children}</div>
       </div>
     </div>
   );

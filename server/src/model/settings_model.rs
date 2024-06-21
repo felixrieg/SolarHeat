@@ -18,6 +18,7 @@ pub struct SettingsData {
     pub start_value: f32,
     pub end_value: f32,
     pub pin: u32,
+    pub default_high: Option<bool>,
 }
 
 impl Default for SettingsData {
@@ -30,6 +31,7 @@ impl Default for SettingsData {
             start_value: 5.0,
             end_value: 5.0,
             pin: 25,
+            default_high: Some(true),
         }
     }
 }

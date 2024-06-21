@@ -20,6 +20,7 @@ const Settings = ({ close }: Props) => {
   const [start_value, setStart_value] = useState(settings.start_value);
   const [end_value, setEnd_value] = useState(settings.end_value);
   const [pin, setPin] = useState(settings.pin);
+  const [default_high, setDefault_high] = useState(!!settings.default_high);
 
   const handleSubmit = (event: any) => {
     const new_settings: Setting = {
@@ -30,6 +31,7 @@ const Settings = ({ close }: Props) => {
       start_value,
       end_value,
       pin,
+      default_high,
     };
     settings.setSettings(new_settings);
     event.preventDefault();
@@ -118,6 +120,20 @@ const Settings = ({ close }: Props) => {
             name="pin"
             label="(RPI) Pin"
           />
+          <label className="switch">
+            <div className="settings-label">Pin default high:</div>
+
+            <input
+              type="checkbox"
+              name={"default_high"}
+              checked={default_high}
+              onChange={(v) => {
+                setDefault_high(v.target.checked);
+                setSubmitted(false);
+              }}
+            />
+            <span className="slider round"></span>
+          </label>
           <input type="submit" value="Submit" disabled={submitted} />
         </form>
       </div>

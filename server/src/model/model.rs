@@ -83,6 +83,7 @@ impl ModelController {
         store.start_value = new_state.start_value;
         store.end_value = new_state.end_value;
         store.pin = new_state.pin;
+        store.default_high = new_state.default_high;
         Ok(store.clone())
     }
 }
@@ -102,6 +103,7 @@ impl Default for ModelController {
 pub struct StatusResponse {
     pub status: bool,
     pub pin: u32,
+    pub pin_state: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

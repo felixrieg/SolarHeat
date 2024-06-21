@@ -16,6 +16,7 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
   end_value: 0,
   submitted: true,
   pin: 0,
+  default_high: true,
   getSettingsAsync: async () => {
     get("settings").then((data) => data && set({ submitted: true, ...data }));
   },

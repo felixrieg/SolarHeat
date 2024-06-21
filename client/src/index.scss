@@ -12,6 +12,9 @@ body {
   transition: background-color 0.5s ease-in;
   width: 100vw;
   height: 100vh;
+  @media only screen and (max-width: $tablet-size) {
+    height: calc(100vh - 100px);
+  }
 }
 
 .App,
@@ -26,4 +29,8 @@ body {
   // @media only screen and (max-width: $tablet-size) {
   //   min-height: calc(100vh - 80px);
   // }
+
+  @media only screen and (max-width: $tablet-size) {
+    height: calc(100vh - 100px);
+  }
 }

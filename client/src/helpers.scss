@@ -72,3 +72,14 @@ select.invisibleSelect {
   width: fit-content;
   text-align-last: center;
 }
+
+.scrollable {
+  overflow-y: scroll;
+
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}

@@ -128,9 +128,16 @@ async fn get_status(State(mc): State<ModelController>) -> Result<Json<StatusResp
         }
     };
 
+    let pin_state = match settings_data.default_high {
+        Some(true) => !status,
+        Some(false) => status,
+        None => status,
+    };
+
     info!("{:<12} - {:?}", "sun", altitude);
     Ok(Json(StatusResponse {
         status: status,
         pin: settings_data.pin,
+        pin_state: pin_state,
     }))
 }

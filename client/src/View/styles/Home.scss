@@ -41,12 +41,27 @@
     background-color: $color-background;
     position: fixed;
     bottom: 0;
-    margin: 0 5vw;
+    width: 100%;
     z-index: $z-onTop;
-    width: 90vw;
     display: flex;
     // flex-direction: row;
     justify-content: space-around;
     align-items: center;
+
+    @media only screen and (min-width: $tablet-size) {
+      right: 0;
+      top: 50px;
+      gap: 10px;
+      bottom: auto;
+      background-color: $color-secondary-background;
+      width: auto;
+      flex-direction: column-reverse;
+      margin: 0;
+      border-radius: 10px 0 0 10px;
+    }
+    @media all and (display-mode: standalone) {
+      padding-bottom: 20px;
+      /* Here goes the CSS rules that will only apply if app is running standalone */
+    }
   }
 }
