@@ -1,20 +1,12 @@
 {
-  "rust-analyzer.linkedProjects": [
-    "./server/Cargo.toml"
-  ],
-  "cSpell.words": [
-    "gpio",
-    "GPIO",
-    "httpc",
-    "solarheat",
-    "suncalc",
-    "unixtime"
-  ],
+  "rust-analyzer.linkedProjects": ["./server/Cargo.toml"],
+  "cSpell.words": ["gpio", "GPIO", "httpc", "solarheat", "suncalc", "unixtime"],
   "conventionalCommits.scopes": [
     "Readme",
     "Actions",
     "frontend",
-    "backend"
+    "backend",
+    "run-script"
   ],
   "editor.tabSize": 2
 }

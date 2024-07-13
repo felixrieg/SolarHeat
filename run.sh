@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start the solarheat container
-# sudo docker run -dit --pull=always --rm -p 8080:8080 -p 80:3000 -v .:/storage ghcr.io/felixrieg/solarheat:latest &
+sudo docker run -dit --pull=always --rm -p 8080:8080 -p 80:3000 -v .:/storage ghcr.io/felixrieg/solarheat:latest &
 
 lastOutput=""
 oldPin=""
